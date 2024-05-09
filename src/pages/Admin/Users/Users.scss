@@ -1,0 +1,167 @@
+.users {
+    margin: 10px 20px 20px 220px;
+
+
+    .container {
+        .head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+
+            button {
+                width: 140px;
+                height: 44px;
+                border: none;
+                background: rgb(4, 84, 243);
+                color: white;
+                border-radius: 7px;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .plus {
+                    color: white;
+                    font-size: 35px;
+                    margin-right: 7px;
+                }
+
+                &:hover {
+                    background: rgb(0, 174, 0);
+                    transition: 0.5s;
+                }
+            }
+        }
+
+        .tableContainer {
+
+            table {
+                width: 100%;
+                background: rgb(27, 27, 27);
+                border-collapse: collapse; // joins the border of two 'th' else there will be 2 || borders
+                border: 1px solid rgb(164, 164, 164);
+                border-radius: 10px;
+
+
+                tr {
+                    border: 1px solid rgb(164, 164, 164);
+
+                    th {
+                        text-align: center;
+                        height: 40px;
+                        border: 1px solid rgb(164, 164, 164);
+
+                    }
+
+                    td {
+                        text-align: center;
+
+                    }
+                }
+            }
+
+
+
+            .blogImg {
+                width: 70px;
+                height: 70px;
+                border-radius: 7px;
+                overflow: hidden;
+                margin: 10px auto;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+
+            .actionBtn {
+                width: 40px;
+                height: 40px;
+                cursor: pointer;
+                margin: 0px 10px;
+
+                &:hover {
+                    transform: scale(1.2);
+                    transition: 0.4s;
+                }
+            }
+
+
+        }
+    }
+
+    /* MyBlog.scss */
+
+    .modal {
+        display: block;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+
+    }
+
+    .modal-content {
+        background-color: #262626;
+        /* Center the modal vertically */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+        border-radius: 8px;
+        position: absolute;
+        margin: 90px 450px;
+
+        h2 {
+            text-align: center;
+        }
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+.confirmBtns {
+
+    .confirm-delete {
+        width: 80px;
+        height: 38px;
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        margin-left: 320px;
+        margin-right: 12px;
+        cursor: pointer;
+    }
+
+    .cancel-delete {
+        width: 80px;
+        height: 38px;
+
+
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+    }
+}
+
+}

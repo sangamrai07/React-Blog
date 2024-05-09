@@ -1,0 +1,47 @@
+.blogCard{
+  width: 400px;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 17px;
+  overflow: hidden;
+  background: #1b1a1a;
+  cursor: pointer;
+  margin-bottom: 20px;
+
+  &:hover{
+    
+    h2{
+        color: #e8cf54;
+    }
+
+    img{
+        transform: scale(1.14);
+        transition: 0.4s all ease-in-out;
+    }
+  }
+
+  .imgContainer{
+    width: 100%;
+    height: 60%;
+    border-radius: 17px;
+    overflow: hidden;
+    margin-bottom: 15px;
+
+    img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+  }
+
+  .textContainer{
+    width: 97.7%;
+    height: 40%;
+    padding-left: 15px;
+
+    p{
+        line-height: 1.5;
+    }
+  }
+}

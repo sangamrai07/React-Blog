@@ -1,0 +1,94 @@
+.singleBlog{
+    margin: 40px 85px;
+    color: white;
+
+    .container{
+        display: flex;
+        gap: 15px;
+
+
+        .left{
+        width: 73%;
+        
+
+        h1{
+            margin-bottom: 8px;
+        }
+
+        .user{
+            display: flex;
+            align-items: center;
+
+            h3{
+                display: flex;
+                align-items: center;
+
+                img{
+                    width: 18px;
+                    height: 18px;
+                    margin-left: 6px;
+                }
+            }
+
+            .userImg{
+                width: 40px;
+                height: 40px;
+                border-radius: 75px;
+                overflow: hidden;
+                margin-right: 12px;
+
+                img{
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+        }
+
+        .sliderContainer{
+            width: 100%;
+            height: 400px;
+            background: rgb(42, 42, 42);
+            margin: 12px 0px;
+            border-radius: 17px;
+            overflow: hidden;
+        }
+
+        .content{
+            p{
+                line-height: 1.5;
+            }
+        }
+
+        .votes{
+
+            img{
+                width: 40px;
+                height: 30px;
+                margin-right: 25px;
+                border: 1px solid gray;
+                border-radius: 15px;
+                padding: 10px;
+            }
+
+            .upVote{
+                background: rgb(0, 183, 0);
+            }
+
+            .downVote{
+                background: rgb(237, 8, 8);
+            }
+        }
+    }
+
+    .right{
+        width: 27%;
+        height: 500px;
+        background: rgb(42, 42, 42);
+           margin-top: 20px;
+            border-radius: 10px;
+            position: sticky;
+            top: 120px;
+    }
+}
+}

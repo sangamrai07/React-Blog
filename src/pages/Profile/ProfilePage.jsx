@@ -8,6 +8,7 @@ import bg8 from '../../images/gridImg8.png';
 import verified from '../../images/verified.png';
 import BlogCard from '../BlogCard/BlogCard';
 import newRequest from '../../utils/newRequest';
+import { success } from '../../components/Toast';
 
 const ProfilePage = () => {
   const [showEditForm, setShowEditForm] = useState(false);
@@ -61,7 +62,7 @@ const ProfilePage = () => {
     formDataToSend.append('imagePath', fileData);
 
     const response = await newRequest.post('/Blog', formDataToSend);
-       
+       success('Blog added successfully.')
       navigate('/')
       console.log('Blog Added.');
       

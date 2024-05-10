@@ -1,10 +1,10 @@
+import {error } from '../../components/Toast.jsx'
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import bg1 from '../../images/signupBg1.png';
 import './Signup.scss';
 import newRequest from '../../utils/newRequest';
-import {error} from '../../components/Toast.jsx'
- 
+
 function Signup() {
   const [formData, setFormData] = useState({
     Email: '',
@@ -25,43 +25,43 @@ function Signup() {
       setFileData(e.target.files[0]);
     } else {
       // Capitalize the attribute names when setting form data
-      setFormData({ ...formData, [e.target.name]: e.target.value });
+      setFormData({ ...formData, [capitalizeFirstLetter(e.target.name)]: e.target.value });
     }
   };
 
+  // Function to capitalize the first letter of a string
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };
 
-  
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    // Check if the file size exceeds 3MB
-    if (fileData && fileData.size > 3 * 1024 * 1024) {
-      error('File size cannot be more than 3MB')
-      return; 
+    try {
+      if (fileData && fileData.size > 3 * 1024 * 1024) {
+        error('File size cannot be more than 3MB')
+        return; 
+      }
+      // Create FormData object to send form data including file
+      const formDataToSend = new FormData();
+      formDataToSend.append('Email', formData.Email);
+      formDataToSend.append('UserName', formData.UserName);
+      formDataToSend.append('Password', formData.Password);
+      formDataToSend.append('ConfirmPassword', formData.ConfirmPassword);
+      formDataToSend.append('imagePath', fileData);
+
+      const response = await newRequest.post('/user/register', formDataToSend);
+      localStorage.setItem("activeUser", JSON.stringify(response.data));
+      navigate('/');
+    } catch (error) {
+      console.log('Registration failed');
+      console.error(error);
     }
-
-    // Create FormData object to send form data including file
-    const formDataToSend = new FormData();
-    formDataToSend.append('Email', formData.Email);
-    formDataToSend.append('UserName', formData.UserName);
-    formDataToSend.append('Password', formData.Password);
-    formDataToSend.append('ConfirmPassword', formData.ConfirmPassword);
-    formDataToSend.append('ImageFile', fileData);
-
-    const response = await newRequest.post('/user/register', formDataToSend);
-    localStorage.setItem("activeUser", JSON.stringify(response.data));
-    navigate('/');
-  } catch (error) {
-    console.log('Registration failed');
-    console.error(error);
-  }
-};
-
+  };
 
   return (
     <div className="signup">
@@ -82,7 +82,7 @@ function Signup() {
               <input type={showPassword ? 'text' : 'password'} name="ConfirmPassword" value={formData.ConfirmPassword} onChange={handleChange} placeholder="Confirm the password..." />
             </div>
             <div className="formItems">
-              <input type="file" name="ImageFile" onChange={handleChange} placeholder="Upload an image..." />
+              <input type="file" name="imagePath" onChange={handleChange} placeholder="Upload an image..." />
             </div>
             <div className="formItems">
               <input type="checkbox" onChange={togglePasswordVisibility} /> <span>Show Password</span>
@@ -95,7 +95,7 @@ function Signup() {
             Already got an Account? <Link className="link" to="/login"><span>Log In</span></Link>
           </p>
         </div>
-        <div className="right" style={{ backgroundImage: `url(${bg1})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="right" style={{ backgroundImage: 'url(${bg1})', backgroundSize: 'cover', backgroundPosition: 'center' }}>
           <h1>Join us at Bislerium and embark on an adventure of discovery and growth.</h1>
         </div>
       </div>
@@ -104,4 +104,3 @@ function Signup() {
 }
 
 export default Signup;
-

@@ -73,7 +73,7 @@ function App() {
         },
             ,
             {
-          path: '/singleBlog',
+          path: '/singleBlog/:id',
           element:
             <SingleBlog/>
         },

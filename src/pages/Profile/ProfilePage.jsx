@@ -3,11 +3,12 @@ import './Profile.scss';
 import icon1 from '../../images/BlogIcon.png';
 import icon2 from '../../images/HomeIcon.png';
 import icon3 from '../../images/MyBlogIcon.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import bg8 from '../../images/gridImg8.png';
 import verified from '../../images/verified.png';
 import BlogCard from '../BlogCard/BlogCard';
 import newRequest from '../../utils/newRequest';
+import { useQuery } from '@tanstack/react-query';
 
 const ProfilePage = () => {
   const [showEditForm, setShowEditForm] = useState(false);
@@ -15,7 +16,24 @@ const ProfilePage = () => {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [formData, setFormData] = useState({
       title: '',
-      descriptipn: ''
+      description: ''
+    });
+
+    const { isLoading:isLoadingUser, error: errorUser, data:dataUser } = useQuery({
+      queryKey: ["profile"],
+      queryFn: () =>
+        newRequest.get('/user/getProfile').then((res) => {
+          return res.data;
+        }),
+    });
+  
+
+    const { isPending:isPendingMyBlog, error: errorBlog, data: dataBlog, refetch } = useQuery({
+      queryKey: ['myBlogs'], // 
+      queryFn: () =>
+        newRequest.get('/blog/my-blogs').then((res) => {
+          return res.data;
+        })
     });
   
   
@@ -40,6 +58,7 @@ const ProfilePage = () => {
     setShowAddForm(!showAddForm);
   };
 
+  const navigate = useNavigate()
   const toggleDeleteConfirmation = () => {
     setShowDeleteConfirmation(!showDeleteConfirmation);
   };
@@ -57,7 +76,7 @@ const ProfilePage = () => {
     // Create FormData object to send form data including file
     const formDataToSend = new FormData();
     formDataToSend.append('title', formData.title);
-    formDataToSend.append('description', formData.descriptipn);
+    formDataToSend.append('description', formData.description);
     formDataToSend.append('imagePath', fileData);
 
     const response = await newRequest.post('/Blog', formDataToSend);
@@ -73,7 +92,7 @@ const ProfilePage = () => {
 
   return (
     <div className='profile'>
-      <div className="container">
+   {isLoadingUser ? "Loading" : errorUser ? "Error Occurred." :   <div className="container">
         <div className="left">
           <div className="leftItems">
             <Link className='link' to='/'>
@@ -92,10 +111,10 @@ const ProfilePage = () => {
         <div className="right">
           <div className="userPrf">
             <div className="img">
-              <img src={bg8} alt="" />
+              <img src={`https://localhost:7295/${dataUser.image}`} alt="" />
             </div>
             <div className="details">
-              <span>Cristiano Ronaldo&nbsp;<img src={verified} alt="" /></span>
+              <span>{dataUser.userName}&nbsp;<img src={verified} alt="" /></span>
               <button onClick={toggleEditForm}>Edit Profile</button>
             </div>
           </div>
@@ -104,10 +123,15 @@ const ProfilePage = () => {
           <hr />
           <h2>Posts</h2>
           <div className="postContainer">
-            <BlogCard />
+          {isPendingMyBlog ? "Extracting" : errorBlog ? "Error Occurred !!" : (dataBlog && dataBlog.length > 0) ? dataBlog.map((blog) => (
+            <BlogCard key={blog.id} item={blog} />
+          )) :                
+                
+                  <h1>No Blog Posts available.</h1>
+               }
           </div>
         </div>
-      </div>
+      </div>}
 
       {showEditForm && (
         <div className="modal">
@@ -170,4 +194,3 @@ const ProfilePage = () => {
 }
 
 export default ProfilePage;
-

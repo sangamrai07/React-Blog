@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Login.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Import axios for making HTTP requests
+
 import newRequest from '../../utils/newRequest';
 
 function Login() {
@@ -26,7 +26,8 @@ function Login() {
     
     try {
       // Make POST request to login endpoint with email and password
-      const response = await newRequest.post('/User/login', userData);
+      const response = await newRequest.post('/User/login', userData,{});
+      localStorage.setItem("activeUser",JSON.stringify(response.data));
        
       navigate('/')
       console.log('Login successful');
@@ -44,10 +45,10 @@ function Login() {
       <div className="container">
         <form onSubmit={handleSubmit} className='loginForm'>
           <div className="formItems">
-            <input type="text" name="Email" value={userData.email} onChange={handleChange} placeholder='Enter your email...' />
+            <input type="text" name="Email" value={userData.Email} onChange={handleChange} placeholder='Enter your email...' />
           </div>
           <div className="formItems">
-            <input type={showPassword ? "text" : "password"} name="Password" value={userData.password} onChange={handleChange} placeholder='Enter the password...' />
+            <input type={showPassword ? "text" : "password"} name="Password" value={userData.Password} onChange={handleChange} placeholder='Enter the password...' />
           </div>
           <div className="formItems">
             <input type="checkbox" onChange={togglePasswordVisibility} /> <span>Show Password</span>
@@ -64,5 +65,3 @@ function Login() {
 }
 
 export default Login;
-
-

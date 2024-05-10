@@ -7,6 +7,9 @@ import verified from '../../images/verified.png'
 import like from '../../images/likeIcon.png'
 import dislike from '../../images/dislikeIcon.png'
 import { Slide } from '@mui/material'
+import { useParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import newRequest from '../../utils/newRequest'
 
 function SingleBlog() {
 
@@ -15,40 +18,65 @@ function SingleBlog() {
   const handleVoteClick = (voteType) => {
     setSelectedBlogVote(voteType === selectedBlogVote ? null : voteType);
   };
+
+    const { id } = useParams();
+
+    const { isPending, error, data } = useQuery({
+      queryKey: ['blog'],
+      queryFn: () =>
+          newRequest.get(`/blog/${id}`).then((res) => {
+              return res.data;
+          })
+  });
+  
+  const { isPending: isPendingUser, error: errorUser, data: dataUser } = useQuery({
+      queryKey: ['user'],
+      queryEnabled: !!data && !!data.authorId, // Enable the query only if data.authorId is available
+      queryFn: () =>
+          newRequest.get(`/user/getProfile/${data.authorId}`).then((res) => {
+              return res.data;
+          })
+  });
+  
+  
+
+
+  
   return (
     <div className='singleBlog'>
-      <div className="container">
-          <div className="left">
-              <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. A, eos.</h1>
-              <div className="user">
-                  <div className="userImg">
-                      <img src={bg1} alt="" />
-                  </div>
-                  <h3>Ed Elric <img src={verified} alt="" /></h3>
-              </div>
-              <div className="sliderContainer">
-                 <Slider/>
+      {isPending ? "Loading" : error ? "Error Occurred." : <div className="container">
+        <div className="left">
+          <h1>{data.title}</h1>
+          <div className="user">
+            <div className="userImg">
+              <img src={bg1} alt="" />
+            </div>
+            {isPendingUser ? "Loading" : errorUser ? "Error Occurred." :   <h3>{dataUser.userName} <img src={verified} alt="" /></h3>}
           </div>
-              <div className="votes">
+          <div className="sliderContainer">
+        <img src={`https://localhost:7295/${data.image}`}></img>
+          </div>
+          <div className="votes">
                           
-              <img className={selectedBlogVote === 'like' ? 'upVote' : ''} src={like} alt="" onClick={() => handleVoteClick('like')} />
-              <img className={selectedBlogVote === 'dislike' ? 'downVote' : ''} src={dislike} alt="" onClick={() => handleVoteClick('dislike')} />
+            <img className={selectedBlogVote === 'like' ? 'upVote' : ''} src={like} alt="" onClick={() => handleVoteClick('like')} />
+            <img className={selectedBlogVote === 'dislike' ? 'downVote' : ''} src={dislike} alt="" onClick={() => handleVoteClick('dislike')} />
            
           </div>
          
-              <div className="content">
+          <div className="content">
             <h2>Description</h2>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima consectetur nihil quia voluptatem recusandae deserunt dolorum, at dolore itaque hic, aperiam blanditiis dolorem perferendis assumenda excepturi neque natus ratione voluptates. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur nam architecto adipisci suscipit repellendus maxime. Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, voluptas!</p>
+            <p>{data.description}</p>
           </div>
           <br />
-           <hr />
-              <div className="comments">
+          <hr />
+          <div className="comments">
             <h2>Comments</h2>
-            <Comments/>
+            <Comments />
           </div>
         </div>
         <div className="right"></div>
       </div>
+      }
     </div>
   )
 }

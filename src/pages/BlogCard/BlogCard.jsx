@@ -13,16 +13,16 @@ function BlogCard({item}) {
 
   return (
     
-      <Link className='link' to='/singleBlog'>
+      <Link className='link' to={`/singleBlog/${item.id}`}>
     <div className='blogCard'>
    
         <div className="imgContainer">
-<img src={bg4} alt="" />
+<img src={`https://localhost:7295/${item.image}`} alt="" />
         </div>
         <div className="textContainer">
         <span>Posted: APR 7, 2017</span>
           <h2>{item.title}</h2>
-        <p>{item.description} </p>
+        <p>{item.body} </p>
         </div>
         </div>
         </Link>  

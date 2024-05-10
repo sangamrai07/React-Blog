@@ -1,8 +1,11 @@
 import axios from "axios";
 
 const newRequest = axios.create({
-  baseURL: "http://localhost:3000/api/",
+  baseURL: "https://localhost:7295/api",
   withCredentials: true,
+  headers: {
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJoYXJpQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMmNkMGI3ZjctZWNjMS00MmI2LTg1OTgtYTEzYzBkMzU1MTJiIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTcxNzA0NTM4NSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzI5NS8iLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3Mjk1LyJ9.Mv2QsBAtvFuDxFpFelAxrq16LPOGM_pM3O-yuwJ9Nl0`
+  }
 });
 
 export default newRequest;

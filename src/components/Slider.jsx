@@ -4,7 +4,7 @@ import bg4 from '../images/gridImg4.png'
 import bg5 from '../images/gridImg5.png'
 import bg6 from '../images/gridImg6.png'
 
-const images = [bg4,bg5,bg6]
+const images = [bg4]
 
 // for demo  
 const Slider = () => {

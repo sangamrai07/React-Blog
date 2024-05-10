@@ -8,9 +8,9 @@ function Blogs() {
 
 
   const { isPending, error, data, refetch } = useQuery({
-    queryKey: ['blogs'], // Include sort parameter in query key
+    queryKey: ['blogs'], // 
     queryFn: () =>
-      newRequest.get(`/Blog`).then((res) => {
+      newRequest.get('/Blog').then((res) => {
         return res.data;
       })
   });
@@ -39,7 +39,7 @@ function Blogs() {
       
       <div className="container">
        {isPending ? "Extracting" : error ? "Error Occurred !!" : (data && data.length > 0) ? data.map((blog) => (
-            <BlogCard key={blog._id} item={blog} />
+            <BlogCard key={blog.id} item={blog} />
           )) :                
                 
                   <h1>No Blog Posts available.</h1>

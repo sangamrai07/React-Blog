@@ -7,11 +7,30 @@ import { Link } from 'react-router-dom';
 import bg8 from '../../images/gridImg8.png';
 import verified from '../../images/verified.png';
 import BlogCard from '../BlogCard/BlogCard';
+import newRequest from '../../utils/newRequest';
 
 const ProfilePage = () => {
   const [showEditForm, setShowEditForm] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [formData, setFormData] = useState({
+      title: '',
+      descriptipn: ''
+    });
+  
+  
+  
+  const [fileData, setFileData] = useState(null); 
+
+   const handleChange = (e) => {
+    if (e.target.type === 'file') {
+      // Update fileData state when file input changes
+      setFileData(e.target.files[0]);
+    } else {
+      // Capitalize the attribute names when setting form data
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+  };
 
   const toggleEditForm = () => {
     setShowEditForm(!showEditForm);
@@ -23,6 +42,33 @@ const ProfilePage = () => {
 
   const toggleDeleteConfirmation = () => {
     setShowDeleteConfirmation(!showDeleteConfirmation);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      // Check if the file size exceeds 3MB
+    if (fileData && fileData.size > 3 * 1024 * 1024) {
+      error('File size cannot be more than 3MB')
+      return; 
+    }
+
+    // Create FormData object to send form data including file
+    const formDataToSend = new FormData();
+    formDataToSend.append('title', formData.title);
+    formDataToSend.append('description', formData.descriptipn);
+    formDataToSend.append('imagePath', fileData);
+
+    const response = await newRequest.post('/Blog', formDataToSend);
+       
+      navigate('/')
+      console.log('Blog Added.');
+      
+    } catch (error) {
+      // Handle login error
+      console.log('Login failed:', error);
+    }
   };
 
   return (
@@ -88,18 +134,18 @@ const ProfilePage = () => {
           <div className="modal-content">
             <span className="close" onClick={toggleAddForm}>&times;</span>
             <h2>Add Blog</h2>
-            <form>
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
               <div className="form-group">
                 <label htmlFor="blogTitle">Blog Title:</label>
-                <input type="text" id="blogTitle" placeholder='title..' name="blogTitle" />
+                <input type="text" id="blogTitle" onChange={handleChange} placeholder='title..' name="title" />
               </div>
               <div className="form-group">
                 <label htmlFor="blogDescription">Description:</label>
-                <textarea id="blogDescription" placeholder='description..' name="blogDescription"></textarea>
+                <textarea id="blogDescription" onChange={handleChange} placeholder='description..' name="description"></textarea>
               </div>
               <div className="form-group">
                 <label htmlFor="blogImage">Image:</label>
-                <input type="file" id="blogImage" name="blogImage" accept="image/*" />
+                <input type="file" id="blogImage" onChange={handleChange} name="imagePath" />
               </div>
               <button className='subBtn' type="submit">Submit</button>
             </form>

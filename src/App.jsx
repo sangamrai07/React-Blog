@@ -14,16 +14,20 @@ import ProfilePage from './pages/Profile/ProfilePage';
 import Sidebar from './pages/Admin/Sidebar/Sidebar';
 import Dashboard from './pages/Admin/Dashboard/Dashboard';
 import Users from './pages/Admin/Users/Users';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 function App() {
+  const queryClient = new QueryClient();
 
   const Layout = () => {
     return (
-      <>     
+      <> 
+       <QueryClientProvider client={queryClient}>
       <Navbar/>  
           <Outlet />
          
           <ToastContainer />
+          </QueryClientProvider>  
       </>
     );
   };
@@ -31,10 +35,12 @@ function App() {
    const AdminLayout = () => {
     return (
       <>     
+        <QueryClientProvider client={queryClient}>
       <Sidebar/>  
           <Outlet />
          
           <ToastContainer />
+          </QueryClientProvider>
       </>
     );
   };

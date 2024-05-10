@@ -1,6 +1,7 @@
-  import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {  toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+
     
-const notify = () => toast(msg);
-const success = () => toast(msg);
-const error = () => toast(msg);
+export const notify = (msg) => toast(msg);
+export const success = (msg) => toast(msg);
+export const error = (msg) => toast(msg);

@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
 import BlogCard from '../BlogCard/BlogCard';
 import './Blogs.scss';
+import newRequest from '../../utils/newRequest';
+import { useQuery } from '@tanstack/react-query';
 
 function Blogs() {
+
+
+  const { isPending, error, data, refetch } = useQuery({
+    queryKey: ['blogs'], // Include sort parameter in query key
+    queryFn: () =>
+      newRequest.get(`/Blog`).then((res) => {
+        return res.data;
+      })
+  });
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {
@@ -27,7 +38,12 @@ function Blogs() {
       </div>
       
       <div className="container">
-        <BlogCard />
+       {isPending ? "Extracting" : error ? "Error Occurred !!" : (data && data.length > 0) ? data.map((blog) => (
+            <BlogCard key={blog._id} item={blog} />
+          )) :                
+                
+                  <h1>No Blog Posts available.</h1>
+               }
       </div>
     </div>
   );

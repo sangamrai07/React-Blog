@@ -1,12 +1,40 @@
 import React, { useState } from 'react';
 import './Login.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Import axios for making HTTP requests
+import newRequest from '../../utils/newRequest';
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [userData, setUserData] = useState({ Email: '', Password: '' });
 
   const togglePasswordVisibility = () => {
     setShowPassword(prevState => !prevState);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData(prevUserData => ({
+      ...prevUserData,
+      [name]: value
+    }));
+  };
+
+  const navigate = useNavigate()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      // Make POST request to login endpoint with email and password
+      const response = await newRequest.post('/User/login', userData);
+       
+      navigate('/')
+      console.log('Login successful');
+      
+    } catch (error) {
+      // Handle login error
+      console.log('Login failed:', error);
+    }
   };
 
   return (
@@ -14,19 +42,18 @@ function Login() {
       <h1>Log into</h1>
       <h1>your Account</h1>
       <div className="container">
-       
-        <form action="" className='loginForm'>
+        <form onSubmit={handleSubmit} className='loginForm'>
           <div className="formItems">
-            <input type="text" placeholder='Enter your email...' />
+            <input type="text" name="Email" value={userData.email} onChange={handleChange} placeholder='Enter your email...' />
           </div>
           <div className="formItems">
-            <input type={showPassword ? "text" : "password"} placeholder='Enter the password...' />
+            <input type={showPassword ? "text" : "password"} name="Password" value={userData.password} onChange={handleChange} placeholder='Enter the password...' />
           </div>
           <div className="formItems">
             <input type="checkbox" onChange={togglePasswordVisibility} /> <span>Show Password</span>
           </div>
           <div className="formItems">
-            <button>Log In</button>
+            <button type="submit">Log In</button>
           </div>
         </form>
         <h4>&mdash;&mdash;&mdash;&mdash;&mdash; OR &mdash;&mdash;&mdash;&mdash;&mdash;</h4>
@@ -37,4 +64,5 @@ function Login() {
 }
 
 export default Login;
+
 
